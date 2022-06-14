@@ -1,3 +1,4 @@
+import 'package:chat_app/services/database.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -8,6 +9,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  //Database service class instance
+  final DatabaseMethods _databaseMethods = DatabaseMethods();
+
+  TextEditingController userNameController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +24,15 @@ class _SearchScreenState extends State<SearchScreen> {
           Row(
             children: [
               Expanded(
-                child: TextField(),
+                child: TextField(
+                  controller: userNameController,
+                ),
               ),
               IconButton(
                 icon: Icon(Icons.search),
-                onPressed: () {},
+                onPressed: () {
+                  _databaseMethods.getUserByUsername(userNameController.text);
+                },
               ),
             ],
           ),
