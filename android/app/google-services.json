@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "714672836455",
+    "project_id": "messanging-app-51375",
+    "storage_bucket": "messanging-app-51375.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714672836455:android:afb7381881dbdedd5b29c2",
+        "android_client_info": {
+          "package_name": "com.pndychrg.chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "714672836455-6j5d6qs7esnuk8vlmob7lm987qdqnrte.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHTV9kuGX8Ljo-zE_5RgQPDhGMBpnlJGo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "714672836455-6j5d6qs7esnuk8vlmob7lm987qdqnrte.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
