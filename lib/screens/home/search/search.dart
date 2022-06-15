@@ -11,8 +11,41 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   //Database service class instance
   final DatabaseMethods _databaseMethods = DatabaseMethods();
-
+  // search field controller
   TextEditingController userNameController = new TextEditingController();
+
+  // user list which is updated as users are found
+  List userList = [];
+  // this function gets the userList and update it
+  initiateSearch() async {
+    var userTemplist =
+        await _databaseMethods.getUserByUsername(userNameController.text);
+    setState(() {
+      userList = userTemplist;
+    });
+  }
+
+  // this widget creates the list view with all the user matching to
+  // given userName
+  Widget searchList() {
+    return userList != null
+        ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: userList.length,
+            itemBuilder: ((context, index) {
+              return SearchTile(
+                  userEmail: userList[index]['email'],
+                  userName: userList[index]['name']);
+            }))
+        : Container();
+  }
+
+  @override
+  void initState() {
+    initiateSearch();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +64,38 @@ class _SearchScreenState extends State<SearchScreen> {
               IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
-                  _databaseMethods.getUserByUsername(userNameController.text);
+                  // _databaseMethods.getUserByUsername(userNameController.text);
+                  initiateSearch();
                 },
               ),
             ],
+          ),
+          searchList(),
+        ],
+      ),
+    );
+  }
+}
+
+class SearchTile extends StatelessWidget {
+  final String userName;
+  final String userEmail;
+  SearchTile({required this.userEmail, required this.userName});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: [
+          Column(
+            children: [
+              Text(userName),
+              Text(userEmail),
+            ],
+          ),
+          Spacer(),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text("Message"),
           ),
         ],
       ),
