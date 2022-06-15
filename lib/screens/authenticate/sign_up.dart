@@ -42,8 +42,8 @@ class _SignUpState extends State<SignUp> {
         isLoading = true;
       });
 
-      dynamic result = await _auth.signUpWithEmailPass(
-          _emailController.text, _passwordController.text);
+      dynamic result = await _auth.signUpWithEmailPass(_emailController.text,
+          _passwordController.text, _usernameController.text);
 
       if (result == null) {
         setState(() {

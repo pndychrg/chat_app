@@ -44,12 +44,14 @@ class AuthService {
   }
 
   //register with email& password
-  Future signUpWithEmailPass(String email, String password) async {
+  Future signUpWithEmailPass(
+      String email, String password, String userName) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
       User? user = result.user;
+      user?.updateDisplayName(userName);
 
       return _createlocalUser(user);
     } catch (e) {

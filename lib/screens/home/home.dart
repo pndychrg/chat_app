@@ -1,7 +1,12 @@
+import 'package:chat_app/models/user.dart';
 import 'package:chat_app/screens/home/search/search.dart';
 import 'package:chat_app/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+//---------------------------------------
+// sending current logged in user details through this screen to search screen
+//---------------------------------------
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -13,6 +18,8 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<LocalUser?>(context);
+    // print(user?.name);
     return SafeArea(
       child: Scaffold(
         drawer: Drawer(
@@ -37,8 +44,13 @@ class _HomeState extends State<Home> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            // print(user?.name);
             Navigator.push(
-                context, MaterialPageRoute(builder: (_) => SearchScreen()));
+                context,
+                MaterialPageRoute(
+                    builder: (_) => SearchScreen(
+                          currentUser: user,
+                        )));
           },
           child: Icon(Icons.search),
         ),
