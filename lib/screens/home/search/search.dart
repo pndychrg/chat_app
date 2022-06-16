@@ -77,7 +77,7 @@ class _SearchScreenState extends State<SearchScreen> {
   createChatroomAndStartConversation(String userSearchName) {
     //creating userList
     List<String?> users = [userSearchName, widget.currentUser?.name];
-    print(users);
+    // print(users);
 
     // using function getchatroomid
     String chatRoomId = getChatRoomId(userSearchName, widget.currentUser?.name);
@@ -87,8 +87,13 @@ class _SearchScreenState extends State<SearchScreen> {
       'chatRoomId': chatRoomId
     };
     _databaseMethods.createChatRoom(chatRoomId, chatRoomMap);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => ConversationScreen()));
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (_) => ConversationScreen(
+                  chatRoomMap: chatRoomMap,
+                  currentUser: widget.currentUser,
+                )));
   }
 
   @override

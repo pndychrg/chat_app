@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class DatabaseMethods {
   //collection reference
@@ -13,9 +14,6 @@ class DatabaseMethods {
   }
 
   //setting userdata stream for further use
-  Stream<QuerySnapshot> get userDatabase {
-    return userCollection.snapshots();
-  }
 
   getUserByUsername(String username) async {
     // User map which is to be found
@@ -48,5 +46,32 @@ class DatabaseMethods {
         .catchError((e) {
       print(e.toString());
     });
+  }
+
+  addConversationMessages(String chatRoomId, Map<String, dynamic> messageMap) {
+    FirebaseFirestore.instance
+        .collection("chatRoom")
+        .doc(chatRoomId)
+        .collection("chats")
+        .add(messageMap)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  getConversationMessages(String chatRoomId) async {
+    return await FirebaseFirestore.instance
+        .collection("chatRoom")
+        .doc(chatRoomId)
+        .collection("chats")
+        .orderBy("time", descending: false)
+        .snapshots();
+  }
+
+  getChatRooms(String? userName) async {
+    return await FirebaseFirestore.instance
+        .collection("chatRoom")
+        .where("users", arrayContains: userName)
+        .snapshots();
   }
 }
