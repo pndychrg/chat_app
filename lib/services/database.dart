@@ -38,14 +38,38 @@ class DatabaseMethods {
     return userList;
   }
 
-  createChatRoom(String chatRoomID, Map<String, dynamic> chatRoomMap) {
-    FirebaseFirestore.instance
-        .collection("chatRoom")
-        .doc(chatRoomID)
-        .set(chatRoomMap)
-        .catchError((e) {
-      print(e.toString());
+  Map<String, dynamic> LocalChatRoomMap = {};
+  getChatRoomByChatRoomId(String chatRoomId) async {
+    Map<String, dynamic> funcChatRoomMap = {};
+    bool chatRoomFound = false;
+    // getting all chatRoom collection and finding if the chatRoomId Exists
+    final data = await FirebaseFirestore.instance.collection("chatRoom").get();
+    data.docs.forEach((element) {
+      Map<String, dynamic> chatRoomMap = element.data();
+      if (chatRoomMap['chatRoomId'] == chatRoomId) {
+        chatRoomFound = true;
+        funcChatRoomMap = chatRoomMap;
+      }
     });
+    if (chatRoomFound) {
+      LocalChatRoomMap = funcChatRoomMap;
+    }
+  }
+
+  createChatRoom(String chatRoomId, Map<String, dynamic> chatRoomMap) async {
+    // checking if the chatRoomId preexists
+    await getChatRoomByChatRoomId(chatRoomId);
+    // print(LocalChatRoomMap);
+    // if clause
+    if (LocalChatRoomMap.isEmpty) {
+      FirebaseFirestore.instance
+          .collection("chatRoom")
+          .doc(chatRoomId)
+          .set(chatRoomMap)
+          .catchError((e) {
+        print(e.toString());
+      });
+    }
   }
 
   addConversationMessages(String chatRoomId, Map<String, dynamic> messageMap) {

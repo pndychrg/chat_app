@@ -18,17 +18,17 @@ class AuthService {
   }
 
   //sign in annon
-  Future signInAnnon() async {
-    try {
-      UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
+  // Future signInAnnon() async {
+  //   try {
+  //     UserCredential result = await _auth.signInAnonymously();
+  //     User? user = result.user;
 
-      return _createlocalUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
+  //     return _createlocalUser(user);
+  //   } catch (e) {
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
 
   //sign in with email & password
   Future signInEmailPassword(String email, String password) async {
@@ -47,12 +47,16 @@ class AuthService {
   Future signUpWithEmailPass(
       String email, String password, String userName) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential result = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((result) {
+        result.user?.updateDisplayName(userName);
+
+        return result;
+      });
 
       User? user = result.user;
       user?.updateDisplayName(userName);
-
       return _createlocalUser(user);
     } catch (e) {
       print(e.toString());

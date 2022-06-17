@@ -35,7 +35,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     }
   }
 
-  late Stream chatMessageStream;
+  late Stream? chatMessageStream = null;
   // chat message list
   Widget ChatMessageList() {
     return StreamBuilder(
@@ -61,7 +61,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
     _databaseMethods
         .getConversationMessages(widget.chatRoomMap['chatRoomId'])
         .then((value) {
-      chatMessageStream = value;
+      setState(() {
+        chatMessageStream = value;
+      });
     });
 
     super.initState();

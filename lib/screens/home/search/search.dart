@@ -2,7 +2,6 @@ import 'package:chat_app/models/user.dart';
 import 'package:chat_app/screens/home/conversationScreen.dart';
 import 'package:chat_app/services/database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   LocalUser? currentUser;
@@ -53,7 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ElevatedButton(
                       onPressed: () {
                         createChatroomAndStartConversation(
-                            userNameSearchController.text);
+                            userSearchList[index]['name']);
                       },
                       child: Text("Message"),
                     ),
@@ -77,16 +76,19 @@ class _SearchScreenState extends State<SearchScreen> {
   createChatroomAndStartConversation(String userSearchName) {
     //creating userList
     List<String?> users = [userSearchName, widget.currentUser?.name];
-    // print(users);
+    print(users);
 
     // using function getchatroomid
     String chatRoomId = getChatRoomId(userSearchName, widget.currentUser?.name);
+    // print(chatRoomId);
     // chatRoomMap
     Map<String, dynamic> chatRoomMap = {
       'users': users,
       'chatRoomId': chatRoomId
     };
+    // print(chatRoomMap);
     _databaseMethods.createChatRoom(chatRoomId, chatRoomMap);
+
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(

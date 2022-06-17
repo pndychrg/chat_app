@@ -26,11 +26,17 @@ class _HomeState extends State<Home> {
   //getting the chatRooms before creating of the screen
   @override
   void initState() {
-    _databaseMethods.getChatRooms(widget.currentUser?.name).then((value) {
-      setState(() {
-        chatRoomStream = value;
+    // print(widget.currentUser?.name);
+    // setting up if clause to ensure chatrooms are only recieved when user is not
+    // null
+    if (widget.currentUser?.name != null) {
+      _databaseMethods.getChatRooms(widget.currentUser?.name).then((value) {
+        setState(() {
+          chatRoomStream = value;
+        });
       });
-    });
+    }
+
     super.initState();
   }
 
@@ -83,12 +89,13 @@ class _HomeState extends State<Home> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // print(user?.name);
+            print(user?.name);
+            print(user?.uID);
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (_) => SearchScreen(
-                          currentUser: user,
+                          currentUser: widget.currentUser,
                         )));
           },
           child: Icon(Icons.search),
