@@ -38,6 +38,33 @@ class DatabaseMethods {
     return userList;
   }
 
+  // getting username by uID to remove issue of getting null userName
+  getUserNamebyUID(String uID) async {
+    String userName = '';
+    //getting the collection users
+    var data = await FirebaseFirestore.instance.collection("users").get();
+    data.docs.forEach((element) {
+      Map user = element.data();
+      if (user['uID'] == uID) {
+        userName = user['name'];
+      }
+    });
+    return userName;
+  }
+
+  //getusername list to ensure usernames are not repeated
+  getUsernameList() async {
+    var userNameList = [];
+    // getting user collection from firebase
+    var data = await FirebaseFirestore.instance.collection("users").get();
+    data.docs.forEach((element) {
+      Map user = element.data();
+
+      userNameList.add(user['name']);
+    });
+    return userNameList;
+  }
+
   Map<String, dynamic> LocalChatRoomMap = {};
   getChatRoomByChatRoomId(String chatRoomId) async {
     Map<String, dynamic> funcChatRoomMap = {};

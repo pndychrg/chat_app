@@ -89,8 +89,6 @@ class _HomeState extends State<Home> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            print(user?.name);
-            print(user?.uID);
             Navigator.push(
                 context,
                 MaterialPageRoute(

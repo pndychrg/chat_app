@@ -73,10 +73,16 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   // create chatroom, send user to conversation screen, pushReplacement
-  createChatroomAndStartConversation(String userSearchName) {
+  createChatroomAndStartConversation(String userSearchName) async {
+    // getting current user name by database methods
+    var currentUserName =
+        await _databaseMethods.getUserNamebyUID(widget.currentUser!.uID);
+
     //creating userList
-    List<String?> users = [userSearchName, widget.currentUser?.name];
-    print(users);
+    List<String?> users = [userSearchName, currentUserName];
+
+    // print(widget.currentUser?.uID);
+    // print(_databaseMethods.getUserNamebyUID(widget.currentUser!.uID));
 
     // using function getchatroomid
     String chatRoomId = getChatRoomId(userSearchName, widget.currentUser?.name);

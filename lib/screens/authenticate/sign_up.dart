@@ -33,30 +33,40 @@ class _SignUpState extends State<SignUp> {
   // error specifier
   String errorText = '';
   signUpFunction() async {
+    //getting the userName list from database
+    List usedUserNameList = await _databaseMethods.getUsernameList();
+    print(usedUserNameList);
     if (formKey.currentState!.validate()) {
-      Map<String, dynamic> userInfoMap = {
-        "name": _usernameController.text,
-        "email": _emailController.text,
-      };
-      setState(() {
-        isLoading = true;
-      });
-
-      dynamic result = await _auth.signUpWithEmailPass(_emailController.text,
-          _passwordController.text, _usernameController.text);
-
-      if (result == null) {
+      if (usedUserNameList.contains(_usernameController.text)) {
         setState(() {
-          isLoading = false;
-        });
-        setState(() {
-          errorText = "Error Occured";
+          errorText = "Username already in use";
         });
       } else {
-        _databaseMethods.updateUserData(result.uID, userInfoMap);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => MyApp()));
-      }
+        setState(() {
+          isLoading = true;
+        });
+
+        dynamic result = await _auth.signUpWithEmailPass(_emailController.text,
+            _passwordController.text, _usernameController.text);
+
+        if (result == null) {
+          setState(() {
+            isLoading = false;
+          });
+          setState(() {
+            errorText = "Error Occured";
+          });
+        } else {
+          Map<String, dynamic> userInfoMap = {
+            "name": _usernameController.text,
+            "email": _emailController.text,
+            "uID": result.uID,
+          };
+          _databaseMethods.updateUserData(result.uID, userInfoMap);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => MyApp()));
+        }
+      } //ending of if clause for usedUsername check
     }
   }
 
